@@ -1,5 +1,6 @@
 #!/bin/bash 
-g++ -o p$1 p$1.cpp -lm
+g++ -o p$1.outprg p$1.cpp -lm
+chmod +x p$1.outprg
 MEMLIMIT=$(curl http://172.0.11.5/OnlineJudge/problem_show.php?id=$1 2>/dev/null |\
     grep '内存限制' |\
     awk '{print $3}' |\
@@ -15,7 +16,7 @@ do
     curl http://172.0.11.5/OnlineJudge/Data/$1/$OUTFILE >data.out 2>/dev/null
     echo
     echo =========================
-    /usr/bin/time -f "Used time:%U s \nUsed memory:%M KB" -o used_time ./p$1 < data.in >mydata.out
+    /usr/bin/time -f "Used time:%U s \nUsed memory:%M KB" -o used_time ./p$1.outprg < data.in >mydata.out
     echo Tested $INPUTFILE
     echo Your answer:
     cat mydata.out
@@ -38,3 +39,4 @@ rm data.in
 rm data.out
 rm mydata.out
 rm used_time
+rm p$1.outprg

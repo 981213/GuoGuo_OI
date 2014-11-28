@@ -135,10 +135,13 @@ bool search_map(struct POINT & point_to_search,struct POINT & first_point,bool i
 }
 void Print_Res()
 {
-    
+    return;
 }
 int main()
 {
+    #ifdef DEBUG
+    freopen ("data","r",stdin);
+    #endif
     scanf("%d%d",&n,&m);
     struct POINT firstpnttemp;
     for(int i=0;i<n;i++)
