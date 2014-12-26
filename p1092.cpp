@@ -23,8 +23,11 @@ struct Node{
     int NodeFather;
 }nodes[2005];
 int NodeCount=1;
+int MinX=214748364,MinY=214748364,MaxX=-214748364,MaxY=-214748364;
+int MaxDist=5000;
 inline void AddEdge(int NodeLeft,int & NodeRight,float EdgeWeight)
 {
+    if(EdgeWeight>MaxDist)return;
     #ifdef DEBUG
     printf("Edge Add %d,%d,%.7f \n",NodeLeft,NodeRight,EdgeWeight);
     #endif
@@ -80,14 +83,21 @@ int main()
     while(NodeCount<=n)
     {
         scanf("%d%d",&nodes[NodeCount].NodeX,&nodes[NodeCount].NodeY);
+        if(nodes[NodeCount].NodeX>MaxX)MaxX=nodes[NodeCount].NodeX;
+        if(nodes[NodeCount].NodeX>MaxY)MaxY=nodes[NodeCount].NodeY;
+        if(nodes[NodeCount].NodeX<MinX)MinX=nodes[NodeCount].NodeX;
+        if(nodes[NodeCount].NodeX<MinY)MinY=nodes[NodeCount].NodeY;
         ++NodeCount;
     }
 //    sort(nodes+1,nodes+NodeCount,custcompare);
+    MaxDist=sqrt(float((MinX-MaxX)*(MinX-MaxX)+(MinY-MaxY)*(MinY-MaxY)))/2;
+    MaxDist=MaxDist>500?MaxDist:500;
     for(int i=1;i<=n;i++)
     {
         AddNode(i);
     }
     sort(edges,edges+EdgeCount,CustCompare);
+
     for(int i=1;i<=n;i++)
     {
         nodes[i].NodeFather=i;
@@ -117,6 +127,6 @@ int main()
         }
         #endif
     }
-    printf("%lld %lld %lld",ToTNum,(long long)(AnsA+0.5),(long long)(AnsB+0.5));
+    printf("%d %d %d",ToTNum,(int)(AnsA+0.5),(int)(AnsB+0.5));
     return 0;
 }
