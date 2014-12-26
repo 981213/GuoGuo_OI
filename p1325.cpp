@@ -1,5 +1,5 @@
 /*************************************************************************
-	> File Name: p1242.cpp priority_queue
+	> File Name: p325.cpp priority_queue
 	> Author: GuoGuo
 	> Mail: gch981213@gmail.com
 	> Created Time: 2014年09月28日 星期日 12时22分43秒
@@ -13,12 +13,12 @@
 #include<queue>
 
 using namespace std;
-priority_queue<int,vector<int>,greater<int> > fruit;
+priority_queue<long long,vector<long long>,greater<long long> > fruit;
 int main()
 {
     int n;
     scanf("%d",&n);
-    long counter=0;
+    long long counter=0;
     for (int i=0;i<n;i++)
     {
         int temp1;
@@ -27,13 +27,13 @@ int main()
     }
     while( fruit.size() != 1 )
     {
-        int temp2=fruit.top();
+        long long temp2=fruit.top();
         fruit.pop();
         temp2+=fruit.top();
         fruit.pop();
         fruit.push(temp2);
         counter+=temp2;
     }
-    printf("%d",counter);
+    printf("%lld",counter);
     return 0;
 }
