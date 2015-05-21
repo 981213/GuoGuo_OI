@@ -55,6 +55,7 @@ int QuerySum(int NodeNum,int Left,int Right)
     } else if((SegTree[NodeNum].Left>Right)||(SegTree[NodeNum].Right<Left)) {
         return 0;
     } else {
+        PushDown(NodeNum);
         return QuerySum(NodeNum*2,Left,Right)+QuerySum(NodeNum*2+1,Left,Right);
     }
 }
@@ -71,7 +72,7 @@ int AddNum(int NodeNum,int Left,int Right,int Val)
         AddNum(NodeNum*2+1,Left,Right,Val);
         return 0;
     }
-    PushUp(NodeNum,(Right-Left)*Val);
+    PushUp(NodeNum,(SegTree[NodeNum].Right-SegTree[NodeNum].Left+1)*Val);
 }
 int Opt,Val1,Val2,Val3;
 int main()
