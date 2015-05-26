@@ -2,7 +2,7 @@
 #include<cstdlib>
 using namespace std;
 struct NODE{
-	int e,c,u,iec,oec,lev;
+	int e,c,u,iec,oec,lev,vis;
 } nodes[120];
 struct EDGE{
 	int w,ne,f,t;
@@ -35,8 +35,9 @@ inline void Update()
 	{
 		int NowN=DQ;
 		int NowE=nodes[NowN].e;
-		if(nodes[NowN].c>0)
+		if((nodes[NowN].c>0)&&(!nodes[NowN].vis))
 		{
+			nodes[NowN].vis=1;
 			while(NowE)
 			{
 				nodes[edges[NowE].t].c+=(nodes[NowN].c*edges[NowE].w);
