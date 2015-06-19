@@ -10,11 +10,11 @@ fi
 echo "[0m"
 chmod +x p$1.outprg
 TOTTIME=0
-MEMLIMIT=$(curl http://172.0.11.5/OnlineJudge/problem_show.php?id=$1 2>/dev/null |\
-    grep '内存限制' |\
-    awk '{print $3}' |\
-    awk -F '：' '{print $2}' |\
-    awk -F 'K' '{print $1}')
+#MEMLIMIT=$(curl http://172.0.11.5/OnlineJudge/problem_show.php?id=$1 2>/dev/null |\
+#    grep '内存限制' |\
+#    awk '{print $3}' |\
+#    awk -F '：' '{print $2}' |\
+#    awk -F 'K' '{print $1}')
 for i in \
     $(curl http://172.0.11.5/OnlineJudge/Data/$1/config.ini 2>/dev/null | sed '1d')
 do
@@ -40,12 +40,13 @@ do
         echo
         echo Correct answer:
         cat data.out
+        echo
     fi
     echo =========================
     echo Used time:$USEDTIME s
     echo Used memory:$USEDMEM KB
     echo Time limit:$TIMELIMIT s
-    echo Memory limit:$MEMLIMIT KB
+#    echo Memory limit:$MEMLIMIT KB
     echo =========================
     if [ $(echo $USEDTIME $TIMELIMIT | awk '{if($1>$2){print "1"}else {print "0"}}') = 1 ]
     then
@@ -53,12 +54,12 @@ do
     else
         TIMERES="[32mTime Check Passed."
     fi
-    if [ $USEDMEM -ge $MEMLIMIT ]
-    then
-        MEMRES="[31mMemory Limit Exceed."
-    else
-        MEMRES="[32mMemory Check Passed."
-    fi
+#    if [ $USEDMEM -ge $MEMLIMIT ]
+#    then
+MEMRES=$(printf "[33mMemory:%11dKB" $USEDMEM)
+#    else
+#        MEMRES="[32mMemory Check Passed."
+#    fi
     echo "$INPUTFILE	$ANSRES	$TIMERES	$MEMRES[0m" >> result
 done
 cat result
