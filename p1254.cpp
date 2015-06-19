@@ -23,10 +23,11 @@ inline void ae(int f,int t,int w)//from,to,weight
 }
 
 //Queue
-int QUE[100000],QF,QT;
+#define QUS 50
+int QUE[QUS],QF,QT;
 #define QEMP (QF==QT)
-#define AQ(a) QUE[(QT++)%100000]=a
-#define DQ QUE[(QF++)%100000]
+#define AQ(a) QUE[(QT++)%QUS]=a
+#define DQ QUE[(QF++)%QUS]
 
 //Update
 inline void Update()
