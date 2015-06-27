@@ -10,23 +10,26 @@ fi
 echo "[0m"
 chmod +x p$1.outprg
 TOTTIME=0
-#MEMLIMIT=$(curl http://172.0.11.5/OnlineJudge/problem_show.php?id=$1 2>/dev/null |\
+#MEMLIMIT=$(curl http://110.90.118.124/OnlineJudge/problem_show.php?id=$1 2>/dev/null |\
 #    grep '内存限制' |\
 #    awk '{print $3}' |\
 #    awk -F '：' '{print $2}' |\
 #    awk -F 'K' '{print $1}')
 for i in \
-    $(curl http://172.0.11.5/OnlineJudge/Data/$1/config.ini 2>/dev/null | sed '1d')
+    $(curl http://110.90.118.124/OnlineJudge/Data/$1/config.ini 2>/dev/null | sed '1d')
 do
     INPUTFILE=$(echo $i | awk -F '|' '{print $1}')
     OUTFILE=$(echo $i | awk -F '|' '{print $2}')
     TIMELIMIT=$(echo $i | awk -F '|' '{print $3}')
-    curl http://172.0.11.5/OnlineJudge/Data/$1/$INPUTFILE > data.in 2>/dev/null
-    curl http://172.0.11.5/OnlineJudge/Data/$1/$OUTFILE >data.out 2>/dev/null
+    echo "====[33mDownloading Data[0m====="
+    curl http://110.90.118.124/OnlineJudge/Data/$1/$INPUTFILE > data.in
+    curl http://110.90.118.124/OnlineJudge/Data/$1/$OUTFILE >data.out
     echo =========================
-    /usr/bin/time -f "%U %M" -o used_time ./p$1.outprg < data.in >mydata.out
-    USEDTIME=$(cat used_time | awk '{print $1}')
-    USEDMEM=$(cat used_time | awk '{print $2}')
+    rm mydata.out
+    ./ujudger-run $(echo $TIMELIMIT|awk '{print (int($1)==$1?$1:int(int($1*10/10+1)))*5}') ./p$1.outprg data.in mydata.out > res
+#    /usr/bin/time -f "%U %M" -o used_time ./p$1.outprg < data.in >mydata.out
+    USEDTIME=$(cat res | awk '{print $3}')
+    USEDMEM=$(cat res | awk '{print $4}')
     echo Tested $INPUTFILE
     if diff -uNZ data.out mydata.out > /dev/null
     then
@@ -68,5 +71,5 @@ rm result
 rm data.in
 rm data.out
 rm mydata.out
-rm used_time
+rm res
 rm p$1.outprg
