@@ -33,9 +33,10 @@ do
     USEDTIME=$(cat res | awk '{print $3}')
     USEDMEM=$(cat res | awk '{print $4}')
     echo Tested $INPUTFILE
-    if [ $EXITSTAT -eq 11 ]
+    if [ ! $EXITSTAT -eq 0 ]
     then
-            ANSRES="[31mRuntime Error[0m"
+            [ $EXITSTAT -eq 11 ] && ANSRES="[31mRuntime Error[0m"
+            [ $EXITSTAT -eq 9 ] && ANSRES="[31mTime Limit Exceed[0m"
             echo $ANSRES
     else
     if diff -uNZ data.out mydata.out > /dev/null
@@ -65,7 +66,7 @@ do
     else
         TIMERES=$(printf "[32mTime:%11fs" $USEDTIME)
     fi
-    [ $EXITSTAT -eq 0 ] || TIMERES=""
+    [ $EXITSTAT -eq 0 ] || TIMERES="                 "
     MEMRES=$(printf "[33mMemory:%11dKB" $USEDMEM)
     echo "$INPUTFILE	$ANSRES	$TIMERES   $MEMRES[0m" >> result
 done
