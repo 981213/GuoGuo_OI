@@ -9,39 +9,41 @@
 #include<cstdlib>
 #include<cstdio>
 #include<algorithm>
-#include<bitset>
-#include<queue>
 using namespace std;
-bitset<1002> ifsearched[1002];
-bitset<1002> ifisAns;
-queue<int> BFSQue;
 int q,p,n;
 int TotN;
-int NowP,NowQ,NowN;
-inline void Search()
+unsigned char IfSched[1000][1000];
+int ans[1000];
+int anscnt;
+#define AdA(a) ans[anscnt++]=a
+void dfs(int nowq,int nowp)
 {
-    BFSQue.push(q*10000+p);
-    while(!BFSQue.empty())
-    {
-        NowQ=BFSQue.front()/10000;
-        NowP=BFSQue.front()%10000;
-        BFSQue.pop();
-        if(ifsearched[NowQ][NowP])
-        {
-            continue;
-        }
-        else
-        {
-            ifsearched[NowQ][NowP]=1;
-            NowN=n-NowP-NowQ;
-
-        }
-    }
+    if(IfSched[nowq][nowp])return;
+    IfSched[nowq][nowp]=1;
+    int nown=n-nowq-nowp;
+    if(nowq==0)AdA(nown);
+    //n->p
+    if(p-nowp>nown)dfs(nowq,nowp+nown);else dfs(nowq,p);
+    //n->q
+    if(q-nowq>nown)dfs(nowq+nown,nowp);else dfs(q,nowp);
+    //p->q
+    if(q-nowq>nowp)dfs(nowq+nowp,0);else dfs(q,nowp-q+nowq);
+    //q->p
+    if(p-nowp>nowq)dfs(0,nowq+nowp);else dfs(nowq-p+nowp,p);
+    //p->n
+    if(n-nown>nowp)dfs(nowq,0);else dfs(nowq,nowp-n+nown);
+    //q->n
+    if(n-nown>nowq)dfs(0,nowp);else dfs(nowq-n+nown,nowp);
 }
 int main()
 {
     scanf("%d%d%d",&q,&p,&n);
     TotN=n;
-
+    dfs(0,0);
+    sort(ans,ans+anscnt);
+    for(int i=0;i<anscnt;i++)
+    {
+        printf("%d ",ans[i]);
+    }
     return 0;
 }
