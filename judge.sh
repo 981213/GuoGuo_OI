@@ -47,7 +47,7 @@ do
         ANSRES="[32mAnswer Correct.  "
     else
         echo Answer Inorrect.
-        ANSRES="[31mAnswer Inorrect."
+        ANSRES="[31mAnswer Incorrect."
         echo Your answer:
         cat mydata.out
         echo
@@ -70,7 +70,7 @@ do
     fi
     [ $EXITSTAT -eq 0 ] || TIMERES="                 "
     MEMRES=$(printf "[33mMemory:%11dKB" $USEDMEM)
-    echo "$INPUTFILE	$ANSRES	$TIMERES   $MEMRES[0m" >> result
+    echo "$(printf '%-15s' $INPUTFILE)   $ANSRES   $TIMERES   $MEMRES[0m" >> result
 done
 cat result
 echo
