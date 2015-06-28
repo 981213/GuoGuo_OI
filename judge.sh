@@ -1,6 +1,8 @@
-#!/bin/bash 
+#!/bin/bash
+[ -f p$1.cpp ] && CCMD="g++ -o p$1.outprg p$1.cpp -lm"
+[ -f p$1.c ] && CCMD="gcc -o p$1.outprg p$1.c -lm"
 echo "[33mCompiling......[31m"
-if g++ -o p$1.outprg p$1.cpp -lm
+if $CCMD
 then
     echo "[32mCompile Succeed."
 else
