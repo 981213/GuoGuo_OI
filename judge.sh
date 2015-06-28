@@ -63,7 +63,7 @@ do
     then
         TIMERES="[31mTime Limit Exceed."
     else
-        TIMERES=$(printf "[32mTime:%11f" $USEDTIME)
+        TIMERES=$(printf "[32mTime:%11fs" $USEDTIME)
     fi
     [ $EXITSTAT -eq 0 ] || TIMERES=""
     MEMRES=$(printf "[33mMemory:%11dKB" $USEDMEM)
