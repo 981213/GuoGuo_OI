@@ -64,7 +64,7 @@ do
     fi
     if [ $(echo $USEDTIME $TIMELIMIT | awk '{if($1>$2){print "1"}else {print "0"}}') = 1 ]
     then
-        TIMERES="[31mTime Limit Exceed."
+        TIMERES="[31mTime Limit Exceed"
     else
         TIMERES=$(printf "[32mTime:%11fs" $USEDTIME)
     fi
