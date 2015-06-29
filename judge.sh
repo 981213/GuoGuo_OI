@@ -1,8 +1,8 @@
 #!/bin/bash
 PROG_PREFIX=p$1
 [ -z "$2" ] || PROG_PREFIX=$2
-[ -f p$1.cpp ] && CCMD="g++ -o p$1.outprg $PROG_PREFIX.cpp -lm"
-[ -f p$1.c ] && CCMD="gcc -o p$1.outprg $PROG_PREFIX.c -lm"
+[ -f p$1.cpp ] && CCMD="g++ -o p$1.outprg $PROG_PREFIX.cpp -lm -g"
+[ -f p$1.c ] && CCMD="gcc -o p$1.outprg $PROG_PREFIX.c -lm -g"
 echo "[33mCompiling......[31m"
 if $CCMD
 then
@@ -32,6 +32,7 @@ do
     rm mydata.out 2> /dev/null
     ./ujudger-run $(echo $TIMELIMIT|awk '{print (int($1)==$1?$1:int(int($1*10/10+1)))*2}') ./p$1.outprg data.in mydata.out > res
     EXITSTAT=$(cat res | awk '{print $6}')
+    DUMPFILE=$(cat res | awk '{print $7}')
     USEDTIME=$(cat res | awk '{print $3}')
     USEDMEM=$(cat res | awk '{print $4}')
     echo Tested $INPUTFILE
@@ -40,6 +41,11 @@ do
             [ $EXITSTAT -eq 11 ] && ANSRES="[31mRuntime Error[0m"
             [ $EXITSTAT -eq 9 ] && ANSRES="[31mTime Limit Exceed[0m"
             echo $ANSRES
+            [ -f $DUMPFILE ] && {
+                echo "=======Dump info========="
+                gdb p$1.outprg $DUMPFILE -q --eval-command=q
+                rm $DUMPFILE
+            }
     else
     if diff -uNZ data.out mydata.out > /dev/null
     then
