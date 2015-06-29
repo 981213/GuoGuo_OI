@@ -1,8 +1,8 @@
 #!/bin/bash
 PROG_PREFIX=p$1
 [ -z "$2" ] || PROG_PREFIX=$2
-[ -f p$1.cpp ] && CCMD="g++ -o p$1.outprg $PROG_PREFIX.cpp -lm -g"
-[ -f p$1.c ] && CCMD="gcc -o p$1.outprg $PROG_PREFIX.c -lm -g"
+[ -f $PROG_PREFIX.cpp ] && CCMD="g++ -o p$1.outprg $PROG_PREFIX.cpp -lm -g"
+[ -f $PROG_PREFIX.c ] && CCMD="gcc -o p$1.outprg $PROG_PREFIX.c -lm -g"
 echo "[33mCompiling......[31m"
 if $CCMD
 then
